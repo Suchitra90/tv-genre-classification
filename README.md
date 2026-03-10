@@ -80,7 +80,7 @@ Run the following command to evaluate the trained model:
 python src/evaluate.py --model_path outputs/model.pkl --data_path data/tv-shows.csv
 ```
 
-This step will:
+This step involves:
 
 * Load the trained model
 * Generate predictions on the test dataset
