@@ -8,7 +8,7 @@ import os
 import warnings
 warnings.filterwarnings('ignore')
 
-from sklearn.metrics import accuracy_score,classification_report,f1_score,confusion_matrix,ConfusionMatrixDisplay
+from sklearn.metrics import accuracy_score,classification_report,f1_score,confusion_matrix,ConfusionMatrixDisplay,precision_score,recall_score
 
 class ModelEvaluator():
 
@@ -49,6 +49,26 @@ class ModelEvaluator():
 
         plt.close()
 
+    def classificatio_report(self,y_test,predictions):
+
+        report = classification_report(y_test, predictions, output_dict=True)
+
+        report_df = pd.DataFrame(report).transpose()
+
+        report_df.iloc[:-1, :-1].plot(kind="bar", figsize=(10,6))
+
+        plt.title("Precision, Recall, F1 Score by Class")
+
+        plt.xlabel("Class")
+
+        plt.ylabel("Score")
+
+        plt.tight_layout()
+
+        plt.savefig("plots/classification_report.png")
+
+        plt.close()
+
     def feature_importance_plot(self,model):
 
         os.makedirs("plots", exist_ok=True)
@@ -85,9 +105,15 @@ class ModelEvaluator():
 
         f1 = f1_score(y_test,predictions,average='weighted')
 
+        precision = precision_score(y_test,predictions,average='weighted')
+
+        recall = recall_score(y_test,predictions,average='weighted')
+
         metrics = {
             'accuracy score': acc,
-            'f1_score' : f1
+            'f1_score' : f1,
+            'precision score' : precision,
+            'recall score' : recall
         }
 
         print(classification_report(y_test,predictions))
@@ -97,6 +123,7 @@ class ModelEvaluator():
 
         #plots
         self.confusion_matrix_plot(y_test,predictions)
+        self.classificatio_report(y_test,predictions)
         self.feature_importance_plot(model)
 
         print('Evaluation Complete')

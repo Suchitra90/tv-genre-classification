@@ -46,7 +46,10 @@ class Model_trainer():
     def get_model(self,model_name):
 
         if model_name == 'logistic':
-            return LogisticRegression(max_iter=2000,random_state=self.seed)
+            model =  LogisticRegression(max_iter=2000,random_state=self.seed)
+            param_grid = {
+                'model__C':[0.01,0,1,1,10]
+            }
 
         elif model_name == 'rf':
             model = RandomForestClassifier(random_state=self.seed)
@@ -65,7 +68,9 @@ class Model_trainer():
                 "model__n_estimators": [200, 300, 400],
                 "model__learning_rate": [0.01, 0.05, 0.1],
                 "model__max_depth": [-1, 5, 10],
-                "model__num_leaves": [31, 50, 80]
+                "model__num_leaves": [31, 50, 80, 120],
+                "model__min_child_samples": [10, 20, 30],
+                "model__subsample": [0.7, 0.8, 1.0]
             }
         else:
             raise ValueError('Invalid Model Name')
